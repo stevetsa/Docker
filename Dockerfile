@@ -1,8 +1,10 @@
 FROM ncbi/edirect as edirect
 FROM ubuntu:18.04 as blastbuild
 
-ARG version
-ARG num_procs=8
+#ARG version="2.9.0"
+#ARG num_procs=8
+ENV version=2.9.0
+ENV num_procs=8
 LABEL Description="NCBI BLAST" Vendor="NCBI/NLM/NIH" Version=${version} Maintainer=camacho@ncbi.nlm.nih.gov
 
 USER root
@@ -10,8 +12,10 @@ WORKDIR /root/
 
 RUN apt-get -y -m update && apt-get install -y build-essential curl libidn11 libnet-perl perl-doc liblmdb-dev
 
-RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-blast-${version}+-src.tar.gz | \
- tar xzf - && \
+#RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-blast-${version}+-src.tar.gz --keepalive-time 2 | \
+# tar xzf - && \
+RUN curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-blast-${version}+-src.tar.gz --keepalive-time 5 &&\
+ tar xzf ncbi-blast-${version}+-src.tar.gz && \
  cd ncbi-blast-${version}+-src/c++ && \
  ./configure --with-mt --with-strip --with-optimization --with-dll --with-experimental=Int8GI --with-flat-makefile --with-openmp --without-vdb --without-gnutls --without-gcrypt --prefix=/blast && \
  cd ReleaseMT/build && \
@@ -19,8 +23,9 @@ RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-
 
 
 FROM ubuntu:18.04
-ARG version
-COPY VERSION .
+#ARG version
+#COPY VERSION .
+ENV version=2.9.0
 
 USER root
 WORKDIR /root/

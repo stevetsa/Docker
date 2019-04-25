@@ -14,7 +14,7 @@ RUN apt-get -y -m update && apt-get install -y build-essential curl libidn11 lib
 
 #RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-blast-${version}+-src.tar.gz --keepalive-time 2 | \
 # tar xzf - && \
-RUN curl -O --insecure ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-blast-${version}+-src.tar.gz --keepalive-time 5 &&\
+RUN curl -O ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.9.0/ncbi-blast-2.9.0+-src.tar.gz &&\
 #RUN wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-blast-${version}+-src.tar.gz && \
  tar xzf ncbi-blast-${version}+-src.tar.gz && \
  cd ncbi-blast-${version}+-src/c++ && \

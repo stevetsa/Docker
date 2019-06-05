@@ -33,6 +33,11 @@ COPY --from=blastbuild /root/ncbi-blast-${version}+-src/c++/ReleaseMT/lib /blast
 
 COPY --from=edirect /usr/local/ncbi/edirect /root/edirect
 
+##
+COPY /root/edirect /blast/bin
+##
+
+
 RUN mkdir -p /blast/blastdb /blast/blastdb_custom
 RUN sed -i '$ a BLASTDB=/blast/blastdb:/blast/blastdb_custom' /etc/environment
 ENV BLASTDB /blast/blastdb:/blast/blastdb_custom

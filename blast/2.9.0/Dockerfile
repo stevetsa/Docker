@@ -1,8 +1,8 @@
 FROM ncbi/edirect as edirect
 FROM ubuntu:18.04 as blastbuild
 
-ARG version
-ARG num_procs=8
+#ARG version
+#ARG num_procs=8
 LABEL Description="NCBI BLAST" Vendor="NCBI/NLM/NIH" Version=${version} Maintainer=camacho@ncbi.nlm.nih.gov
 
 USER root

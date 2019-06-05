@@ -1,8 +1,8 @@
 FROM ncbi/edirect as edirect
 FROM ubuntu:18.04 as blastbuild
 
-ARG version=2.9.0
-ARG num_procs=8
+#ARG version=2.9.0
+#ARG num_procs=8
 LABEL Description="NCBI BLAST" Vendor="NCBI/NLM/NIH" Version=${version} Maintainer=camacho@ncbi.nlm.nih.gov
 
 USER root
@@ -10,13 +10,18 @@ WORKDIR /root/
 
 RUN apt-get -y -m update && apt-get install -y build-essential curl libidn11 libnet-perl perl-doc liblmdb-dev
 
-RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-blast-${version}+-src.tar.gz | \
- tar xzf - && \
- cd ncbi-blast-${version}+-src/c++ && \
- ./configure --with-mt --with-strip --with-optimization --with-dll --with-experimental=Int8GI --with-flat-makefile --with-openmp --without-vdb --without-gnutls --without-gcrypt --prefix=/blast && \
- cd ReleaseMT/build && \
- make -j ${num_procs} -f Makefile.flat blastdb_aliastool.exe blastdbcheck.exe blastdbcmd.exe blast_formatter.exe blastn.exe blastp.exe blastx.exe convert2blastmask.exe deltablast.exe dustmasker.exe makeblastdb.exe makembindex.exe makeprofiledb.exe psiblast.exe rpsblast.exe rpstblastn.exe segmasker.exe tblastn.exe tblastx.exe windowmasker.exe
+#RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${version}/ncbi-blast-${version}+-src.tar.gz | \
+# tar xzf - && \
+# cd ncbi-blast-${version}+-src/c++ && \
+# ./configure --with-mt --with-strip --with-optimization --with-dll --with-experimental=Int8GI --with-flat-makefile --with-openmp --without-vdb --without-gnutls --without-gcrypt --prefix=/blast && \
+# cd ReleaseMT/build && \
+# make -j ${num_procs} -f Makefile.flat blastdb_aliastool.exe blastdbcheck.exe blastdbcmd.exe blast_formatter.exe blastn.exe blastp.exe blastx.exe convert2blastmask.exe deltablast.exe dustmasker.exe makeblastdb.exe makembindex.exe makeprofiledb.exe psiblast.exe rpsblast.exe rpstblastn.exe segmasker.exe tblastn.exe tblastx.exe windowmasker.exe
 
+RUN curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.9.0/ncbi-blast-2.9.0-src.tar.gz | tar xzf -
+RUN cd ncbi-blast-2.9.0-src/c++
+RUN ./configure --with-mt --with-strip --with-optimization --with-dll --with-experimental=Int8GI --with-flat-makefile --with-openmp --without-vdb --without-gnutls --without-gcrypt --prefix=/blast
+RUN cd ReleaseMT/build
+RUN make -j 8 -f Makefile.flat blastdb_aliastool.exe blastdbcheck.exe blastdbcmd.exe blast_formatter.exe blastn.exe blastp.exe blastx.exe convert2blastmask.exe deltablast.exe dustmasker.exe makeblastdb.exe makembindex.exe makeprofiledb.exe psiblast.exe rpsblast.exe rpstblastn.exe segmasker.exe tblastn.exe tblastx.exe windowmasker.exe
 
 FROM ubuntu:18.04
 ARG version
